@@ -1,0 +1,383 @@
+K   0 K:0:0
+
+K   1 K:spike:Iron Spike~
+K   2 K:light:Wooden Torch~
+K   3 K:light:Lantern~
+K   4 K:flask:Flask~ of oil
+
+K  10 K:food:Ration~ of Food
+K  11 K:food:Slime Mold~
+K  12 K:food:Piece~ of Elvish Waybread
+
+K  30 K:sword:Dagger~
+K  31 K:sword:Main Gauche~
+K  32 K:sword:Rapier~
+K  33 K:sword:Short Sword~
+K  34 K:sword:Cutlass~
+K  35 K:sword:Tulwar~
+K  36 K:sword:Scimitar~
+K  37 K:sword:Long Sword~
+K  38 K:sword:Broad Sword~
+K  39 K:sword:Bastard Sword~
+K  40 K:sword:Katana~
+K  41 K:sword:Zweihander~
+K  42 K:sword:Executioner's Sword~
+K  43 K:sword:Blade~ of Chaos
+
+K  50 K:hafted:Whip~
+K  51 K:hafted:Ball-and-Chain~
+K  52 K:hafted:Morning Star~
+K  53 K:hafted:Flail~
+K  54 K:hafted:Two-Handed Great Flail~
+
+K  55 K:hafted:Mace~
+K  56 K:hafted:Lead-Filled Mace~
+K  57 K:hafted:Quarterstaff~
+K  58 K:hafted:War Hammer~
+K  59 K:hafted:Maul~
+K  60 K:hafted:Great Hammer~
+K  61 K:hafted:Mace~ of Disruption
+
+K  65 K:polearm:Spear~
+K  66 K:polearm:Awl-Pike~
+K  67 K:polearm:Trident~
+K  68 K:polearm:Halberd~
+K  69 K:polearm:Pike~
+
+K  70 K:polearm:Beaked Axe~
+K  71 K:polearm:Broad Axe~
+K  72 K:polearm:Battle Axe~
+K  73 K:polearm:Lochaber Axe~
+K  74 K:polearm:Great Axe~
+
+K  75 K:polearm:Scythe~
+K  76 K:polearm:Glaive~
+K  77 K:polearm:Lance~
+K  78 K:polearm:Scythe~ of Slicing
+K  79 K:polearm:Lucerne Hammer~
+
+K  90 K:bow:Sling~
+K  91 K:bow:Short Bow~
+K  92 K:bow:Long Bow~
+K  93 K:bow:Light Crossbow~
+K  94 K:bow:Heavy Crossbow~
+
+K 100 K:arrow:Arrow~
+K 101 K:arrow:Seeker Arrow~
+K 102 K:arrow:Mithril Arrow~
+K 105 K:bolt:Bolt~
+K 106 K:bolt:Seeker Bolt~
+K 107 K:bolt:Mithril Bolt~
+K 110 K:shot:Rounded Pebble~
+K 111 K:shot:Iron Shot~
+K 112 K:shot:Mithril Shot~
+
+K 120 K:digger:Shovel~
+K 121 K:digger:Pick~
+K 122 K:digger:Mattock~
+
+K 130 K:boots:Pair~ of Leather Sandals
+K 131 K:boots:Pair~ of Leather Boots
+K 132 K:boots:Pair~ of Iron Shod Boots
+K 133 K:boots:Pair~ of Steel Shod Boots
+K 134 K:boots:Pair~ of Mithril Shod Boots
+K 135 K:boots:Pair~ of Ethereal Slippers
+
+K 140 K:helm:Hard Leather Cap~
+K 141 K:helm:Metal Cap~
+K 142 K:helm:Iron Helm~
+K 143 K:helm:Steel Helm~
+K 144 K:crown:Iron Crown~
+K 145 K:crown:Golden Crown~
+K 146 K:crown:Jewel Encrusted Crown~
+
+K 150 K:soft armor:Robe~
+K 151 K:soft armor:Soft Leather Armour~
+K 152 K:soft armor:Studded Leather Armour~
+K 153 K:soft armor:Hard Leather Armour~
+K 154 K:soft armor:Leather Scale Mail~
+K 155 K:hard armor:Metal Scale Mail~
+K 156 K:hard armor:Chain Mail~
+K 157 K:hard armor:Augmented Chain Mail~
+K 158 K:hard armor:Bar Chain Mail~
+K 159 K:hard armor:Metal Brigandine Armour~
+K 160 K:hard armor:Partial Plate Armour~
+K 161 K:hard armor:Metal Lamellar Armour~
+K 162 K:hard armor:Full Plate Armour~
+K 163 K:hard armor:Ribbed Plate Armour~
+K 164 K:hard armor:Mithril Chain Mail~
+K 165 K:hard armor:Mithril Plate Mail~
+K 166 K:hard armor:Adamantite Plate Mail~
+
+K 170 K:cloak:Cloak~
+K 171 K:cloak:Fur Cloak~
+K 172 K:cloak:Elven Cloak~
+K 173 K:cloak:Ethereal Cloak~
+
+K 174 K:gloves:Set~ of Leather Gloves
+K 175 K:gloves:Set~ of Gauntlets
+K 176 K:gloves:Set~ of Mithril Gauntlets
+K 177 K:gloves:Set~ of Caestus
+K 178 K:gloves:Set~ of Alchemist's Gloves
+#K 179 K:gloves:Set~ of Mining Gloves
+
+#K 180 K:shield:Buckler~
+K 181 K:shield:Wicker Shield~
+K 182 K:shield:Small Metal Shield~
+K 183 K:shield:Leather Shield~
+K 184 K:shield:Large Metal Shield~
+K 185 K:shield:Mithril Shield~
+
+K 260 K:scroll:Phase Door
+K 261 K:scroll:Teleportation
+K 262 K:scroll:Teleport Level
+
+K 263 K:scroll:Magic Mapping
+K 264 K:scroll:Treasure Detection
+K 265 K:scroll:Trap Detection
+K 266 K:scroll:Door/Stair Location
+K 267 K:scroll:Detect Invisible
+
+K 270 K:scroll:Enchant Weapon To-Hit
+K 271 K:scroll:Enchant Weapon To-Dam
+K 272 K:scroll:Enchant Armour
+K 273 K:scroll:*Enchant Weapon*
+K 274 K:scroll:*Enchant Armour*
+K 275 K:scroll:Remove Curse
+K 276 K:scroll:*Remove Curse*
+
+K 278 K:scroll:Summon Monster
+K 279 K:scroll:Summon Undead
+K 280 K:scroll:Acquirement
+K 281 K:scroll:*Acquirement*
+
+K 282 K:scroll:Dispel Undead
+K 283 K:scroll:Banishment
+K 284 K:scroll:Mass Banishment
+
+K 285 K:scroll:Satisfy Hunger
+K 286 K:scroll:Identify
+K 289 K:scroll:Light
+K 290 K:scroll:Word of Recall
+K 291 K:scroll:Recharging
+K 292 K:scroll:Trap/Door Destruction
+K 293 K:scroll:Deep Descent
+
+K 294 K:scroll:Blessing
+K 295 K:scroll:Holy Chant
+K 296 K:scroll:Holy Prayer
+K 297 K:scroll:Protection from Evil
+
+K 298 K:scroll:Monster Confusion
+K 299 K:scroll:Rune of Protection
+K 300 K:scroll:*Destruction*
+
+K 301 K:scroll:Aggravate Monster
+K 302 K:scroll:Curse Weapon
+K 303 K:scroll:Curse Armour
+K 304 K:scroll:Darkness
+K 305 K:scroll:Trap Creation
+
+K 460 K:magic book:[Magic for Beginners]
+K 461 K:magic book:[Conjurings and Tricks]
+K 462 K:magic book:[Incantations and Illusions]
+K 463 K:magic book:[Sorcery and Evocations]
+K 464 K:prayer book:[Beginners Handbook]
+K 465 K:prayer book:[Words of Wisdom]
+K 466 K:prayer book:[Chants and Blessings]
+K 467 K:prayer book:[Exorcism and Dispelling]
+
+K 468 K:magic book:[Resistances of Scarabtarices]
+K 469 K:magic book:[Raal's Tome of Destruction]
+K 470 K:magic book:[Mordenkainen's Escapes]
+K 471 K:magic book:[Tenser's Transformations]
+K 472 K:magic book:[Kelek's Grimoire of Power]
+K 473 K:prayer book:[Ethereal Openings]
+K 474 K:prayer book:[Godly Insights]
+K 475 K:prayer book:[Purifications and Healing]
+K 476 K:prayer book:[Holy Infusions]
+K 477 K:prayer book:[Wrath of God]
+
+K 480 K:chest:Small wooden chest~
+K 481 K:chest:Large wooden chest~
+K 482 K:chest:Small iron chest~
+K 483 K:chest:Large iron chest~
+K 484 K:chest:Small steel chest~
+K 485 K:chest:Large steel chest~
+K 486 K:chest:Ruined chest~
+
+K 490 K:bottle:Empty Bottle~
+K 491 K:junk:Shard~ of Pottery
+K 492 K:junk:Broken Stick~
+K 493 K:skeleton:Broken Skull~
+K 494 K:skeleton:Broken Bone~
+K 495 K:skeleton:Canine Skeleton~
+K 496 K:skeleton:Rodent Skeleton~
+K 497 K:skeleton:Human Skeleton~
+K 498 K:skeleton:Dwarf Skeleton~
+K 499 K:skeleton:Elf Skeleton~
+
+K 500 K:dragon armor:Black Dragon Scale Mail~
+K 501 K:dragon armor:Blue Dragon Scale Mail~
+K 502 K:dragon armor:White Dragon Scale Mail~
+K 503 K:dragon armor:Red Dragon Scale Mail~
+K 504 K:dragon armor:Green Dragon Scale Mail~
+K 505 K:dragon armor:Multi-Hued Dragon Scale Mail~
+K 506 K:dragon armor:Pseudo-Dragon Scale Mail~
+K 507 K:dragon armor:Law Dragon Scale Mail~
+K 508 K:dragon armor:Bronze Dragon Scale Mail~
+K 509 K:dragon armor:Gold Dragon Scale Mail~
+K 510 K:dragon armor:Chaos Dragon Scale Mail~
+K 511 K:dragon armor:Balance Dragon Scale Mail~
+K 512 K:dragon armor:Power Dragon Scale Mail~
+
+K 520 K:gold:copper
+K 521 K:gold:silver
+K 522 K:gold:garnets
+K 523 K:gold:gold
+K 524 K:gold:opals
+K 525 K:gold:sapphires
+K 526 K:gold:rubies
+K 527 K:gold:diamonds
+K 528 K:gold:emeralds
+K 529 K:gold:mithril
+K 530 K:gold:adamantite
+
+K 540 K:hafted:Mighty Hammer~
+K 542 K:crown:Massive Iron Crown~
+
+K 550 K:light:4
+K 551 K:light:5
+K 552 K:light:6
+K 553 K:amulet:50
+K 554 K:amulet:51
+K 555 K:amulet:52
+K 556 K:ring:50
+K 557 K:ring:51
+K 558 K:ring:52
+K 559 K:ring:53
+K 560 K:ring:54
+K 561 K:ring:55
+K 562 K:light:7
+K 563 K:amulet:53
+K 564 K:amulet:54
+
+S   1 GF:*:static
+S   2 GF:*:0
+S   3 GF:*:45
+S   4 GF:*:90
+S   5 GF:*:135
+
+S   6 GF:MANA:static
+S   7 GF:MANA:0
+S   8 GF:MANA:45
+S   9 GF:MANA:90
+S  10 GF:MANA:135
+
+S  11 GF:LIGHT_WEAK:static
+S  12 GF:LIGHT_WEAK:0
+S  13 GF:LIGHT_WEAK:45
+S  14 GF:LIGHT_WEAK:90
+S  15 GF:LIGHT_WEAK:135
+
+S  16 GF:DARK_WEAK:static
+S  17 GF:DARK_WEAK:0
+S  18 GF:DARK_WEAK:45
+S  19 GF:DARK_WEAK:90
+S  20 GF:DARK_WEAK:135
+
+S  21 GF:WATER:static
+S  22 GF:WATER:0
+S  23 GF:WATER:45
+S  24 GF:WATER:90
+S  25 GF:WATER:135
+
+S  26 GF:PLASMA:static
+S  27 GF:PLASMA:0
+S  28 GF:PLASMA:45
+S  29 GF:PLASMA:90
+S  30 GF:PLASMA:135
+
+S  31 GF:METEOR:static
+S  32 GF:METEOR:0
+S  33 GF:METEOR:45
+S  34 GF:METEOR:90
+S  35 GF:METEOR:135
+
+S  36 GF:ICE:static
+S  37 GF:ICE:0
+S  38 GF:ICE:45
+S  39 GF:ICE:90
+S  40 GF:ICE:135
+
+S  41 GF:GRAVITY | INERTIA | FORCE | TIME:static
+S  42 GF:GRAVITY | INERTIA | FORCE | TIME:0
+S  43 GF:GRAVITY | INERTIA | FORCE | TIME:45
+S  44 GF:GRAVITY | INERTIA | FORCE | TIME:90
+S  45 GF:GRAVITY | INERTIA | FORCE | TIME:135
+
+S  46 GF:ACID:static
+S  47 GF:ACID:0
+S  48 GF:ACID:45
+S  49 GF:ACID:90
+S  50 GF:ACID:135
+
+S  51 GF:ELEC:static
+S  52 GF:ELEC:0
+S  53 GF:ELEC:45
+S  54 GF:ELEC:90
+S  55 GF:ELEC:135
+
+S  56 GF:FIRE:static
+S  57 GF:FIRE:0
+S  58 GF:FIRE:45
+S  59 GF:FIRE:90
+S  60 GF:FIRE:135
+
+S  61 GF:COLD:static
+S  62 GF:COLD:0
+S  63 GF:COLD:45
+S  64 GF:COLD:90
+S  65 GF:COLD:135
+
+S  66 GF:POIS:static
+S  67 GF:POIS:0
+S  68 GF:POIS:45
+S  69 GF:POIS:90
+S  70 GF:POIS:135
+
+S  71 GF:LIGHT:static
+S  72 GF:LIGHT:0
+S  73 GF:LIGHT:45
+S  74 GF:LIGHT:90
+S  75 GF:LIGHT:135
+
+S  76 GF:DARK | NETHER:static
+S  77 GF:DARK | NETHER:0
+S  78 GF:DARK | NETHER:45
+S  79 GF:DARK | NETHER:90
+S  80 GF:DARK | NETHER:135
+
+S  81 GF:SOUND:static
+S  82 GF:SOUND:0
+S  83 GF:SOUND:45
+S  84 GF:SOUND:90
+S  85 GF:SOUND:135
+
+S  86 GF:SHARD:static
+S  87 GF:SHARD:0
+S  88 GF:SHARD:45
+S  89 GF:SHARD:90
+S  90 GF:SHARD:135
+
+S  91 GF:NEXUS | DISEN | CONFU:static
+S  92 GF:NEXUS | DISEN | CONFU:0
+S  93 GF:NEXUS | DISEN | CONFU:45
+S  94 GF:NEXUS | DISEN | CONFU:90
+S  95 GF:NEXUS | DISEN | CONFU:135
+
+S  96 GF:CHAOS:static
+S  97 GF:CHAOS:0
+S  98 GF:CHAOS:45
+S  99 GF:CHAOS:90
+S 100 GF:CHAOS:135
