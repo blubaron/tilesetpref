@@ -88,4 +88,20 @@ To split a png file with transparency to seperate color and mask files:
     scale, or whatever you prefer.
 10. Done :)
 
+Some tiles in the terrain tile build set (32x32_terain.png and
+  32x32_terrain_overlay_door) are by David Gervais. The license for these tiles
+  is below (copied from Angband's copying.txt):
+
+ * David Gervais' (32x32) graphics may be redistributed, modified, and used
+   only under the terms of the Creative Commons Attribution 3.0 licence:
+   http://creativecommons.org/licenses/by/3.0/
+
+The tile picker may be redistributed and used under Angband license:
+
+ *    This software may be copied and distributed for educational, research,
+ *    and not for profit purposes provided that this copyright and statement
+ *    are included in all such copies.  Other copyrights may also apply.
+
+The source code is not released yet.  When it is, the license will be the dual
+  licenses angband uses: the angband license or GPL v2.
 
