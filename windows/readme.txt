@@ -96,7 +96,7 @@ Some tiles in the terrain tile build set (32x32_terain.png and
    only under the terms of the Creative Commons Attribution 3.0 licence:
    http://creativecommons.org/licenses/by/3.0/
 
-The tile picker may be redistributed and used under Angband license:
+The tile picker may be redistributed and used under the Angband license:
 
  *    This software may be copied and distributed for educational, research,
  *    and not for profit purposes provided that this copyright and statement
