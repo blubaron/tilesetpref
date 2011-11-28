@@ -104,9 +104,9 @@ int main(int argc, char *argv[])
         bf = ((float)b) / 255.f;
         af = ((float)a) / 255.f;
         
-        r = (png_byte)((rf\af)*255.f);
-        g = (png_byte)((gf\af)*255.f);
-        b = (png_byte)((bf\af)*255.f);
+        r = (png_byte)((rf/af)*255.f);
+        g = (png_byte)((gf/af)*255.f);
+        b = (png_byte)((bf/af)*255.f);
         if (r > 255) r = 255;
         if (g > 255) r = 255;
         if (b > 255) r = 255;
