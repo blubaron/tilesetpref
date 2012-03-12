@@ -6,7 +6,7 @@ The text file should have one range and destination per line. Each line should h
 The seperators can be any character, since the actual character is not checked, only offset from read numbers.
 Any line that starts with a '#' or a ';' will be ignored.
 There should not be any whitespace in front of the first character of the line.
-The above sample means move the pref file coordinates for any entry that uses a tile between the 2nd and 3rd to last tiles two tile to the right.
+With the above sample, pref file entries that uses a tile in the range would use a tile two tiles to the right of the original. The range is the second tile from the left to the third tile from the end, on the first row.
 
 After the program start, three open file dialog boxes will come up. The first is used to select the text file with the adjustment ranges and destinations. The second is used to select the pref file to adjust. The third dialog box selects a filename to write the adjusted file to. The output file name should be different than the input file name.
 
