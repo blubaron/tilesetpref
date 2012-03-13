@@ -305,6 +305,13 @@ int FAR PASCAL WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR lpCmdLine, in
     // see if this line could have some coordinates
     if ((line[1] == _T(':')) || (line[2] == _T(':'))) {
       b = _tcsrchr(line, _T(':'));
+      if ((b > line+linelen-2) || _istalpha(*(b+1)) || _istspace(*(b+1))) {
+        // b is just before a flag and needs to be set back more
+        a = b-1;
+        // move the pointer to a previous colon
+        while((*(a--) != _T(':')) && (a > line));
+        b = a+1;
+      }
       a = _tcschr(b, _T('/'));
       if (a && (a-line < linelen)) {
         // the coordinate pair is seperated by a slash and b is
