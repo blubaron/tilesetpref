@@ -3,7 +3,7 @@ This tool will read some ranges and destinations from a text file and adjust pre
 Usage:
 The text file should have one range and destination per line. Each line should have the format:
 0x80:0x81 0x80:0xFD 0x80:0x83
-The seperators can be any character, since the actual character is not checked, only offset from read numbers.
+The seperators can be any character, since only that the numbers are seperated by a single character matters.
 Any line that starts with a '#' or a ';' will be ignored.
 There should not be any whitespace in front of the first character of the line.
 With the above sample, pref file entries that uses a tile in the range would use a tile two tiles to the right of the original. The range is the second tile from the left to the third tile from the end, on the first row.
