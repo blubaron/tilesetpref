@@ -212,11 +212,17 @@ int FAR PASCAL WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR lpCmdLine, in
     Message("No output file... Aborting");
     return E_ABORT;
   }
+  
+  // make sure the input and output files are not thte same
+  if (_tcsncmp(input, output, 1024) == 0) {
+    Message("Input and output file names cannot be the same... Aborting");
+    return E_ABORT;
+  }
+
   // load the adjustment ranges
   adjustment_entry *listroot, *listend, *temp;
   int linelen;
-  int x,y,nx,ny;
-  TCHAR *a,*b,*start, *end;
+  TCHAR *start, *end;
 
   FILE *fp = file_open(adjust, MODE_READ, FTYPE_TEXT);
   if (!fp) {
@@ -283,6 +289,8 @@ int FAR PASCAL WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR lpCmdLine, in
     Message("Failed to open output file... Aborting");
     return E_INVALIDARG;
   }
+  int x,y,nx,ny;
+  TCHAR *a,*b;
 
   // start logging
   len = strlen(output);
@@ -326,6 +334,10 @@ int FAR PASCAL WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR lpCmdLine, in
           coordtype = 2;
         }
       }
+      if (coordtype == 4) {
+        x += 128;
+        y += 128;
+      }
       nx = 0; ny = 0;
       temp = listroot;
       while (temp) {
@@ -359,10 +371,10 @@ int FAR PASCAL WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR lpCmdLine, in
           }
         } else
         if (coordtype == 3) {
-          fprintf(out, "%o:%o", ny,nx);
+          fprintf(out, "0%o:0%o", ny,nx);
         } else
         if (coordtype == 2) {
-          fprintf(out, "0%d:0%d", ny,nx);
+          fprintf(out, "%d:%d", ny,nx);
         } else
         {
           fprintf(out, "0x%.2X:0x%.2X", ny,nx);
