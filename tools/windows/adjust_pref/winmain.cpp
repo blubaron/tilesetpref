@@ -52,6 +52,23 @@ void clear_adjustment_list(adjustment_entry *root)
   }
 }
 
+typedef struct _adjustment_io_entry {
+  struct _adjustment_io_entry *pNext;
+  TCHAR input[256];
+  TCHAR output[256];
+} adjustment_io_entry;
+
+void clear_adjustment_io_list(adjustment_io_entry *root)
+{
+  adjustment_io_entry *temp, *next;
+  temp = root;
+  while(temp) {
+    next = temp->pNext;
+    mem_free(temp);
+    temp = next;
+  }
+}
+
 //------------------------------------------------------------------
 // 
 // Function     : InitClass()
@@ -141,6 +158,7 @@ int FAR PASCAL WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR lpCmdLine, in
   TCHAR adjust[1024];
   //TCHAR temp[1024];
   TCHAR line[256];
+  bool pickfile = true;
 
   // Set global handle
   if (!InitClass(hInst)) {
@@ -159,72 +177,113 @@ int FAR PASCAL WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR lpCmdLine, in
   adjust[0] = 0;
   line[0] = 0;
 
-  // get the adjustment file name
+  // see if the default adjustment file name exists
+  if (file_exists("adjust.txt")) {
+    if (MessageBox(NULL, "Read adjustment ranges from adjust.txt?", zWndClassName, MB_YESNO | MB_ICONQUESTION) == IDYES) {
+      _tcsncpy(adjust, "adjust.txt", 1024);
+      pickfile = false;
+    }
+  }
+
   OPENFILENAME ofn;
-  memset(&ofn,0,sizeof(OPENFILENAME));
-  ofn.lStructSize = sizeof(ofn);
-  ofn.hwndOwner = NULL;
-  ofn.lpstrFilter = "Text Image Files (*.txt)\0*.txt\0";
-  ofn.nFilterIndex = 1;
-  ofn.lpstrFile = adjust;
-  ofn.nMaxFile = 1024;
-  ofn.lpstrTitle = "Select the file to read adjustment ranges from";
-  ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR | OFN_NOREADONLYRETURN;
-  ofn.lpstrInitialDir = ".";
-  if (!GetOpenFileName(&ofn)) {
-    Message("No adjustment file... Aborting");
-    return E_ABORT;
+  if (pickfile) {
+    // get the adjustment file name
+    memset(&ofn,0,sizeof(OPENFILENAME));
+    ofn.lStructSize = sizeof(ofn);
+    ofn.hwndOwner = NULL;
+    ofn.lpstrFilter = "Adjustment Text Files (*.txt)\0*.txt\0";
+    ofn.nFilterIndex = 1;
+    ofn.lpstrFile = adjust;
+    ofn.nMaxFile = 1024;
+    ofn.lpstrTitle = "Select the file to read adjustment ranges from";
+    ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR | OFN_NOREADONLYRETURN;
+    ofn.lpstrInitialDir = ".";
+    if (!GetOpenFileName(&ofn)) {
+      Message("No adjustment file... Aborting");
+      return E_ABORT;
+    }
   }
+  pickfile = true;
+  // check if the adjustment file has any input/output filename pairs
+  FILE *fp = file_open(adjust, MODE_READ, FTYPE_TEXT);
+  if (!fp) {
+    Message("Failed to load adjustment file... Aborting");
+    return E_INVALIDARG;
+  }
+  // read each line, and create an entry for it
+  while(file_getl(fp, line,256)) {
+    if ((line[0] == _T('P')) && (line[1] == _T(':'))) {
+      // we have a input/output filename pair, so we don't
+      // need to pick them. if this line is incorrect, the
+      // line will be skipped below.
+      pickfile = false;
+      break;
+    }
+  }
+  file_close(fp);
+  fp = NULL;
 
-  // get the input file name
-  memset(&ofn,0,sizeof(OPENFILENAME));
-  ofn.lStructSize = sizeof(ofn);
-  ofn.hwndOwner = NULL;
-  ofn.lpstrFilter = "Angband PRF Files (*.prf)\0*.prf\0";
-  ofn.nFilterIndex = 1;
-  ofn.lpstrFile = input;
-  ofn.nMaxFile = 1024;
-  ofn.lpstrTitle = "Select the input file";
-  ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR | OFN_NOREADONLYRETURN;
-  ofn.lpstrInitialDir = ".";
-  if (!GetOpenFileName(&ofn)) {
-    Message("No input file... Aborting");
-    return E_ABORT;
-  }
-  len = _tcslen(input);
-  if (len < 1024 - 12) {
-    // create a default output name
-    _tcsncpy(output,input,1024);
-    _tcsncpy(output+len-4, "-result.prf", 12);
-  }
-  // get the output file name
-  memset(&ofn,0,sizeof(OPENFILENAME));
-  ofn.lStructSize = sizeof(ofn);
-  ofn.hwndOwner = NULL;
-  ofn.lpstrFilter = "Angband PRF Files (*.prf)\0*.prf\0";
-  ofn.nFilterIndex = 1;
-  ofn.lpstrFile = output;
-  ofn.nMaxFile = 1024;
-  ofn.lpstrTitle = "Enter a filename for the output";
-  ofn.Flags = OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR | OFN_NOREADONLYRETURN;
-  ofn.lpstrInitialDir = ".";
-  if (!GetOpenFileName(&ofn)) {
-    Message("No output file... Aborting");
-    return E_ABORT;
-  }
+  adjustment_io_entry *ioroot, *ioend, *iotemp;
+  ioroot = ioend = iotemp = NULL;
+  if (pickfile) {
+    // get the input file name
+    memset(&ofn,0,sizeof(OPENFILENAME));
+    ofn.lStructSize = sizeof(ofn);
+    ofn.hwndOwner = NULL;
+    ofn.lpstrFilter = "Angband PRF Files (*.prf)\0*.prf\0";
+    ofn.nFilterIndex = 1;
+    ofn.lpstrFile = input;
+    ofn.nMaxFile = 1024;
+    ofn.lpstrTitle = "Select the input file";
+    ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR | OFN_NOREADONLYRETURN;
+    ofn.lpstrInitialDir = ".";
+    if (!GetOpenFileName(&ofn)) {
+      Message("No input file... Aborting");
+      return E_ABORT;
+    }
+    len = _tcslen(input);
+    if (len < 1024 - 12) {
+      // create a default output name
+      _tcsncpy(output,input,1024);
+      _tcsncpy(output+len-4, "-result.prf", 12);
+    }
+    // get the output file name
+    memset(&ofn,0,sizeof(OPENFILENAME));
+    ofn.lStructSize = sizeof(ofn);
+    ofn.hwndOwner = NULL;
+    ofn.lpstrFilter = "Angband PRF Files (*.prf)\0*.prf\0";
+    ofn.nFilterIndex = 1;
+    ofn.lpstrFile = output;
+    ofn.nMaxFile = 1024;
+    ofn.lpstrTitle = "Enter a filename for the output";
+    ofn.Flags = OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR | OFN_NOREADONLYRETURN;
+    ofn.lpstrInitialDir = ".";
+    if (!GetOpenFileName(&ofn)) {
+      Message("No output file... Aborting");
+      return E_ABORT;
+    }
   
-  // make sure the input and output files are not thte same
-  if (_tcsncmp(input, output, 1024) == 0) {
-    Message("Input and output file names cannot be the same... Aborting");
-    return E_ABORT;
+    // make sure the input and output files are not thte same
+    if (_tcsncmp(input, output, 1024) == 0) {
+      Message("Input and output file names cannot be the same... Aborting");
+      return E_ABORT;
+    }
+    iotemp = (adjustment_io_entry*) mem_alloc(sizeof(adjustment_io_entry));
+    if (!iotemp) {
+      Message("Unable to allocate adjustment io pair entry... Aborting");
+      return E_OUTOFMEMORY;
+    }
+    _tcsncpy(iotemp->input, input, 256);
+    _tcsncpy(iotemp->output, output, 256);
+    iotemp->pNext = NULL;
+    ioroot = ioend = iotemp;
   }
-
   // load the adjustment ranges
   adjustment_entry *listroot, *listend, *temp;
   int linelen;
   TCHAR *start, *end;
 
-  FILE *fp = file_open(adjust, MODE_READ, FTYPE_TEXT);
+  fp = file_open(adjust, MODE_READ, FTYPE_TEXT);
   if (!fp) {
     Message("Failed to load adjustment file... Aborting");
     return E_INVALIDARG;
@@ -246,11 +305,43 @@ int FAR PASCAL WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR lpCmdLine, in
       // skip lines that are commented out
       continue;
     }
+    if ((line[0] == _T('P')) && (line[1] == _T(':'))) {
+      // we have a input/output filename pair
+      TCHAR *sep = _tcschr(&(line[2]),_T(':'));
+      if (sep && (_tcslen(sep) > 3)) {
+        *sep = 0;
+        if (_tcscmp(&(line[2]), sep+1) == 0) {
+          Message("Input and output file names cannot be the same... Skipping");
+          Message(line);
+          continue;
+        }
+        iotemp = (adjustment_io_entry*) mem_alloc(sizeof(adjustment_io_entry));
+        if (!iotemp) {
+          clear_adjustment_list(listroot);
+          clear_adjustment_io_list(ioroot);
+          Message("Unable to allocate adjustment io pair entry... Aborting");
+          return E_OUTOFMEMORY;
+        }
+        _tcsncpy(iotemp->input, &(line[2]), 256);
+        _tcsncpy(iotemp->output, sep+1, 256);
+        iotemp->pNext = NULL;
+        // add this entry to the list
+        if (!ioroot) ioroot = iotemp;
+        if (!ioend) {
+          ioend = iotemp;
+        } else {
+          ioend->pNext = iotemp;
+          ioend = iotemp;
+        }
+      }
+      continue;
+    }
 
     temp = (adjustment_entry*) mem_alloc(sizeof(adjustment_entry));
     if (!temp) {
-      fclose(fp);
+      file_close(fp);
       clear_adjustment_list(listroot);
+      clear_adjustment_io_list(ioroot);
       Message("Unable to allocate adjustment range entry... Aborting");
       return E_OUTOFMEMORY;
     }
@@ -275,163 +366,179 @@ int FAR PASCAL WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR lpCmdLine, in
   file_close(fp);
   fp = NULL;
 
-  // load the input
-  FILE *in = file_open(input, MODE_READ, FTYPE_TEXT);
-  if (!in) {
+  if (!ioroot) {
     clear_adjustment_list(listroot);
-    Message("Failed to load input file... Aborting");
+    clear_adjustment_io_list(ioroot);
+    Message("No input / output pairs loaded... Aborting");
     return E_INVALIDARG;
   }
-  FILE *out = file_open(output, MODE_WRITE, FTYPE_TEXT);
-  if (!out) {
-    file_close(in);
-    clear_adjustment_list(listroot);
-    Message("Failed to open output file... Aborting");
-    return E_INVALIDARG;
-  }
-  int x,y,nx,ny;
-  TCHAR *a,*b;
 
-  // start logging
-  len = strlen(output);
-  if (len < 1024 - 9) {
-    _tcsncpy(output + len, ".log.txt", 8);
-    fp = file_open(output, MODE_WRITE, FTYPE_TEXT);
-  }
-  // read each line, and write it to the output file
-  while(file_getl(in, line,256)) {
-    linelen = strlen(line);
+  iotemp = ioroot;
+  while (iotemp) {
+    // load the input
+    FILE *in = file_open(iotemp->input, MODE_READ, FTYPE_TEXT);
+    if (!in) {
+      clear_adjustment_list(listroot);
+      clear_adjustment_io_list(ioroot);
+      Message("Failed to load input file... Aborting");
+      return E_INVALIDARG;
+    }
+    FILE *out = file_open(iotemp->output, MODE_WRITE, FTYPE_TEXT);
+    if (!out) {
+      file_close(in);
+      clear_adjustment_list(listroot);
+      clear_adjustment_io_list(ioroot);
+      Message("Failed to open output file... Aborting");
+      return E_INVALIDARG;
+    }
+    int x,y,nx,ny;
+    TCHAR *a,*b;
 
-    // see if this line could have some coordinates
-    if ((line[1] == _T(':')) || (line[2] == _T(':'))) {
-      b = _tcsrchr(line, _T(':'));
-      if ((b > line+linelen-2) || _istalpha(*(b+1)) || _istspace(*(b+1))) {
-        // b is just before a flag and needs to be set back more
-        a = b-1;
-        // move the pointer to a previous colon
-        while((*(a--) != _T(':')) && (a > line));
-        b = a+1;
-      }
-      a = _tcschr(b, _T('/'));
-      if (a && (a-line < linelen)) {
-        // the coordinate pair is seperated by a slash and b is
-        // the start of the coordinate
-        start = b+1;
-      } else {
-        // the coordinate pair is seperated by a colon and b is
-        // the middle of the coordinate
-        start = b;
-        while(_istalnum(*(--start)));
-        start += 1;
-      }
-      y = _tcstol(start, &a, 0);
-      x = _tcstol(a+1, &end, 0);
-      if (coordtype == 0) {
-        if (start[0] == '0') {
-          if ((start[1] == _T('x')) || (start[1] == _T('X'))) {
-            coordtype = 1;
-          } else {
-            coordtype = 3;
-          }
-        } else
-        if ((start[0] == _T('+')) || (a[2]) == _T('+')) {
-          coordtype = 4;
-        } else
-        {
-          coordtype = 2;
+    // start logging
+    len = strlen(output);
+    if (len < 1024 - 9) {
+      _tcsncpy(output + len, ".log.txt", 8);
+      fp = file_open(output, MODE_WRITE, FTYPE_TEXT);
+    }
+    // read each line, and write it to the output file
+    while(file_getl(in, line,256)) {
+      linelen = strlen(line);
+
+      // see if this line could have some coordinates
+      if ((line[1] == _T(':')) || (line[2] == _T(':'))) {
+        b = _tcsrchr(line, _T(':'));
+        if ((b > line+linelen-2) || _istalpha(*(b+1)) || _istspace(*(b+1))) {
+          // b is just before a flag and needs to be set back more
+          a = b-1;
+          // move the pointer to a previous colon
+          while((*(a--) != _T(':')) && (a > line));
+          b = a+1;
         }
-      }
-      if (coordtype == 4) {
-        x += 128;
-        y += 128;
-      }
-      nx = 0; ny = 0;
-      temp = listroot;
-      while (temp) {
-        if ((y >= temp->miny) && (y <= temp->maxy)) {
-          if ((x >= temp->minx) && (x <= temp->maxx)) {
-            ny = temp->desty + (y - temp->miny);
-            nx = temp->destx + (x - temp->minx);
-            break;
+        a = _tcschr(b, _T('/'));
+        if (a && (a-line < linelen)) {
+          // the coordinate pair is seperated by a slash and b is
+          // the start of the coordinate
+          start = b+1;
+        } else {
+          // the coordinate pair is seperated by a colon and b is
+          // the middle of the coordinate
+          start = b;
+          while(_istalnum(*(--start)));
+          start += 1;
+        }
+        y = _tcstol(start, &a, 0);
+        x = _tcstol(a+1, &end, 0);
+        if (coordtype == 0) {
+          if (start[0] == '0') {
+            if ((start[1] == _T('x')) || (start[1] == _T('X'))) {
+              coordtype = 1;
+            } else {
+              coordtype = 3;
+            }
+          } else
+          if ((start[0] == _T('+')) || (a[2]) == _T('+')) {
+            coordtype = 4;
+          } else
+          {
+            coordtype = 2;
           }
         }
-        temp = temp->pNext;
-      }
-      if (nx || ny) {
-        // the coordinates were shifted
-        // write the first part of the line
-        fwrite(line,sizeof(TCHAR),start-line,out);
-        // write the coordinates
         if (coordtype == 4) {
-          if (ny >= 128) {
-            if (nx >= 128) {
-              fprintf(out, "+%d:+%d", ny-128,nx-128);
-            } else {
-              fprintf(out, "+%d:%d", ny-128,nx-128);
-            }
-          } else {
-            if (nx >= 128) {
-              fprintf(out, "%d:+%d", ny-128,nx-128);
-            } else {
-              fprintf(out, "%d:%d", ny-128,nx-128);
+          x += 128;
+          y += 128;
+        }
+        nx = 0; ny = 0;
+        temp = listroot;
+        while (temp) {
+          if ((y >= temp->miny) && (y <= temp->maxy)) {
+            if ((x >= temp->minx) && (x <= temp->maxx)) {
+              ny = temp->desty + (y - temp->miny);
+              nx = temp->destx + (x - temp->minx);
+              break;
             }
           }
-        } else
-        if (coordtype == 3) {
-          fprintf(out, "0%o:0%o", ny,nx);
-        } else
-        if (coordtype == 2) {
-          fprintf(out, "%d:%d", ny,nx);
-        } else
-        {
-          fprintf(out, "0x%.2X:0x%.2X", ny,nx);
+          temp = temp->pNext;
         }
-        // write the end of the line
-        fwrite(end,sizeof(TCHAR),linelen-(end-line),out);
-        
-        if (fp) {
+        if (nx || ny) {
+          // the coordinates were shifted
+          // write the first part of the line
+          fwrite(line,sizeof(TCHAR),start-line,out);
+          // write the coordinates
           if (coordtype == 4) {
             if (ny >= 128) {
               if (nx >= 128) {
-                fprintf(fp, "Adjusted %s to +%d:+%d\r\n", line, ny-128,nx-128);
+                fprintf(out, "+%d:+%d", ny-128,nx-128);
               } else {
-                fprintf(fp, "Adjusted %s to +%d:%d\r\n", line, ny-128,nx-128);
+                fprintf(out, "+%d:%d", ny-128,nx-128);
               }
             } else {
               if (nx >= 128) {
-                fprintf(fp, "Adjusted %s to %d:+%d\r\n", line, ny-128,nx-128);
+                fprintf(out, "%d:+%d", ny-128,nx-128);
               } else {
-                fprintf(fp, "Adjusted %s to %d:%d\r\n", line, ny-128,nx-128);
+                fprintf(out, "%d:%d", ny-128,nx-128);
               }
             }
           } else
           if (coordtype == 3) {
-            fprintf(fp, "Adjusted %s to 0%o:0%o\r\n", line, ny,nx);
+            fprintf(out, "0%o:0%o", ny,nx);
           } else
           if (coordtype == 2) {
-            fprintf(fp, "Adjusted %s to %d:%d\r\n", line, ny,nx);
+            fprintf(out, "%d:%d", ny,nx);
           } else
           {
-            fprintf(fp, "Adjusted %s to 0x%.2X:0x%.2X\r\n", line, ny,nx);
+            fprintf(out, "0x%.2X:0x%.2X", ny,nx);
           }
+          // write the end of the line
+          fwrite(end,sizeof(TCHAR),linelen-(end-line),out);
+        
+          if (fp) {
+            if (coordtype == 4) {
+              if (ny >= 128) {
+                if (nx >= 128) {
+                  fprintf(fp, "Adjusted %s to +%d:+%d\r\n", line, ny-128,nx-128);
+                } else {
+                  fprintf(fp, "Adjusted %s to +%d:%d\r\n", line, ny-128,nx-128);
+                }
+              } else {
+                if (nx >= 128) {
+                  fprintf(fp, "Adjusted %s to %d:+%d\r\n", line, ny-128,nx-128);
+                } else {
+                  fprintf(fp, "Adjusted %s to %d:%d\r\n", line, ny-128,nx-128);
+                }
+              }
+            } else
+            if (coordtype == 3) {
+              fprintf(fp, "Adjusted %s to 0%o:0%o\r\n", line, ny,nx);
+            } else
+            if (coordtype == 2) {
+              fprintf(fp, "Adjusted %s to %d:%d\r\n", line, ny,nx);
+            } else
+            {
+              fprintf(fp, "Adjusted %s to 0x%.2X:0x%.2X\r\n", line, ny,nx);
+            }
+          }
+        } else {
+          // coordinates were not changed, just copy the line
+          fwrite(line,sizeof(TCHAR),linelen,out);
         }
       } else {
-        // coordinates were not changed, just copy the line
+        // if no coordinates, just copy the line
         fwrite(line,sizeof(TCHAR),linelen,out);
       }
-    } else {
-      // if no coordinates, just copy the line
-      fwrite(line,sizeof(TCHAR),linelen,out);
+      fwrite(_T("\r\n"),sizeof(TCHAR),2,out);
+      // clear the front of the line  to prevent false positives
+      memset(line,0,8);
     }
-    fwrite(_T("\r\n"),sizeof(TCHAR),2,out);
-    // clear the front of the line  to prevent false positives
-    memset(line,0,8);
-  }
 
-  file_close(out);
-  file_close(in);
+    file_close(out);
+    file_close(in);
+
+    iotemp = iotemp->pNext;
+  }
   clear_adjustment_list(listroot);
   listroot = NULL;
+  clear_adjustment_io_list(ioroot);
+  ioroot = NULL;
 
   if (fp) {
     fprintf(fp, "Finished... Closing\r\n");
